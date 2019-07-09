@@ -1,0 +1,60 @@
+{% extends "core.html" %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="container">
+			<h2 class="text-center" id="title">Таски</h2>
+ 			<hr>
+			<div class="row">
+				<div class="col-md-5">
+ 					<form role="form" method="post" action="">
+                        {% csrf_token %}
+						<fieldset>
+                            <p class="text-uppercase">Реєстрація  <a class="text-uppercase" href="{% url 'login' %}">Вхід</a></p>
+ 							<div class="form-group">
+                                {{ form.email.errors }}
+								<input type="email" name="email" id="email" class="form-control input-lg" placeholder="username">
+							</div>
+							<div class="form-group">
+                                {{ form.first_name.errors }}
+								<input type="first_name" name="first_name" id="first_name" class="form-control input-lg" placeholder="Ім\'я">
+							</div>
+                            <div class="form-group">
+                                {{ form.last_name.errors }}
+								<input type="last_name" name="last_name" id="last_name" class="form-control input-lg" placeholder="Прізвище">
+							</div>
+                            <div class="form-group">
+                                {{ form.post.errors }}
+								<input type="post" name="post" id="post" class="form-control input-lg" placeholder="Посада">
+							</div>
+                            <div class="form-group">
+                                {{ form.date_birth.errors }}
+                                <input name="date_birth" type='text' class="form-control" id='datetimepicker1' placeholder="Дата народження"/>
+							</div>
+                            <div class="form-group">
+                                {{ form.image.errors }}
+                                {{ form.image }}
+							</div>
+							<div class="form-group">
+                                {{ form.password.errors }}
+								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+							</div>
+                            <div class="form-group">
+                                {{ form.password2.errors }}
+                                <input type="password" name="password2" id="password2" class="form-control input-lg" placeholder="Password">
+                            </div>
+ 							<div>
+                                <input type="submit" class="btn btn-lg btn-primary" value="Реєстрація" name="register">
+ 							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datepicker();
+            });
+    </script>
+{% endblock %}

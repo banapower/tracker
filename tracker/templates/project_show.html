@@ -1,0 +1,47 @@
+{% extends "core.html" %}
+
+{% block content %}
+<div class="container">
+  <h2>Проект {{ project.name }}  {{ project.description }}</h2>
+</div>
+    <div class="container">
+    <h2>Проект {{ project.name }}  {{ project.description }}</h2>
+    {% if user.is_staff %}
+        <a href="{% url 'project-task-edit' project.url 0 %}" class="btn btn-success popup form">Додати завдання</a>
+    {% endif %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Тема</th>
+        <th>Опис</th>
+        <th>Тип</th>
+        <th>Пріоритет</th>
+        <th>Час в годинах</th>
+        <th>Автор</th>
+        <th>Створений</th>
+          {% if user.is_staff %}
+            <th></th>
+          {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+          <tr>
+            <td>{{ task.topic }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.type }}</td>
+            <td>{{ task.priority }}</td>
+            <td>{{ task.estimated_time }}</td>
+            <td>{{ task.author }}</td>
+            <td>{{ task.created }}</td>
+            {% if user.is_staff %}
+                <td>
+                    <a href="{% url 'project-task-edit' project.url task.pk %}" class="btn btn-success popup form">Edit</a>
+                </td>
+            {% endif %}
+          </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
