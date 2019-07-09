@@ -25,7 +25,6 @@ def project_list(request):
 
 def priject_show(request, url):
     project = get_object_or_404(Project, url=url, programers=request.user)
-    print(project.tasks.all())
     return render(request, 'project_show.html', {'project': project})
 
 
@@ -41,11 +40,14 @@ def project_edit(request, url):
 
 @user_passes_test(lambda u: u.is_staff)
 def project_task_edit(request, url, pk):
+    project = get_object_or_404(Project, url=url)
     task = None if pk == '0' else get_object_or_404(Task, pk=pk)
     form = TaskForm(request.POST or None, instance=task)
     if form.is_valid():
         task = form.save(commit=False)
         task.author = request.user
+        task.project = project
         task.save()
-    return render(request, 'login.html', {'form': form})
+        return close_view(request, 'project-show', project.url)
+    return render(request, 'task_edit.html', {'form': form})
 

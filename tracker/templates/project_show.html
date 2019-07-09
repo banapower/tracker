@@ -1,13 +1,12 @@
 {% extends "core.html" %}
 
 {% block content %}
-<div class="container">
-  <h2>Проект {{ project.name }}  {{ project.description }}</h2>
-</div>
     <div class="container">
     <h2>Проект {{ project.name }}  {{ project.description }}</h2>
+    <a href="{% url 'project-list' %}" class="btn btn-info">Список проектів</a>
     {% if user.is_staff %}
-        <a href="{% url 'project-task-edit' project.url 0 %}" class="btn btn-success popup form">Додати завдання</a>
+        <a href="{% url 'project-edit' project.url %}" class="btn btn-success popup">Редагувати проект</a>
+        <a href="{% url 'project-task-edit' project.url 0 %}" class="btn btn-success popup">Додати завдання</a>
     {% endif %}
   <table class="table table-striped">
     <thead>
@@ -25,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for task in tasks %}
+      {% for task in project.tasks.all %}
           <tr>
             <td>{{ task.topic }}</td>
             <td>{{ task.description }}</td>

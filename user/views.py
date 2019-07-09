@@ -15,8 +15,8 @@ def login_user(request):
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
         user = authenticate(username=email, password=password)
-        login(request, user)
         if user:
+            login(request, user)
             return redirect('project-list')
         else:
             print('error')
@@ -32,8 +32,8 @@ def signup(request):
             user.set_password(password)
             user.save()
             user = authenticate(username=user.email, password=password)
-            print('>>> ', user)
-            login(request, user)
-            return redirect('project-list')
+            if user:
+                login(request, user)
+                return redirect('project-list')
     return render(request, 'signup.html', {'form': form})
 

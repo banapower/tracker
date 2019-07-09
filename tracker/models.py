@@ -27,7 +27,7 @@ class Task(models.Model):
                              (2, 'високій'),
                              (3, 'срочно'))
 
-    project = models.ForeignKey(Project, related_name='tasks', on_delete=models.PROTECT)
+    project = models.ForeignKey(Project, related_name='tasks', on_delete=models.PROTECT, null=True)
     topic = models.CharField('Тема', max_length=100)
     description = models.CharField('Опис', max_length=255)
     date_from = models.DateTimeField('Дата початку')

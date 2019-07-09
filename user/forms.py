@@ -9,13 +9,13 @@ class LoginForm(forms.Form):
     email = forms.CharField(label='Електронна пошта')
     password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
 
-    # def clean_password(self):
-    #     email = self.cleaned_data.get('email')
-    #     password = self.cleaned_data.get('password')
-    #     user = authenticate(email=email, password=password)
-    #     if (not email) or (not user):
-    #         raise forms.ValidationError('Невірний пароль або email.')
-    #     return password
+    def clean_password(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        user = authenticate(email=email, password=password)
+        if (not email) or (not user):
+            raise forms.ValidationError('Невірний пароль або email.')
+        return password
 
 
 class UserCreationForm(forms.ModelForm):
