@@ -9,14 +9,11 @@ class UserManager(BaseUserManager):
             raise ValueError('Користувачі повинні мати email адресу')
         user = self.model(email=self.normalize_email(email))
         user.set_password(password)
-        # user.type = 0
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password):
         user = self.create_user(password=password, email=email)
-        # user.is_admin = True
-        # user.type = 0
         user.save(using=self._db)
         return user
 
@@ -30,7 +27,6 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['post', 'first_name', 'last_name', 'date_birth']
 
     email = models.EmailField('Електронна пошта', unique=True)
-    # username = models.CharField('username', unique=True, max_length=30, null=True)
     first_name = models.CharField('Ім\'я', max_length=30)
     last_name = models.CharField('Прізвище', max_length=50)
     date_birth = models.DateField('Дата народження')
@@ -40,8 +36,3 @@ class User(AbstractBaseUser):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     objects = UserManager()
-    #
-    # def save(self, *args, **kwargs):
-    #     self.username = self.email
-    #     super(User, self).save(*args, **kwargs)
-    #

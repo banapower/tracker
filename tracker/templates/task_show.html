@@ -1,0 +1,109 @@
+{% extends "core.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+    <h2>Завдання {{ task.name }}</h2>
+        <a href="{% url 'project-list' %}" class="btn btn-info">Список проектів</a>
+        <a href="{% url 'project-show' task.project.url  %}" class="btn btn-info">Повернутися до проекту: {{ task.project.name }}</a>
+        <a href="{% url 'project-task-edit' task.project.url task.pk %}" class="btn btn-success popup">Редагувати завдання</a>
+        {% if task.performer == user %}
+            <a href="{% url 'time-logging-edit' task.project.url task.pk %}" class="btn btn-success popup">Додати логування часу</a>
+        {% endif %}
+        <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Назва</th>
+        <th>Значення</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td>Тема</td>
+          <td>{{ task.topic }}</td>
+      </tr>
+      <tr>
+          <td>Опис</td>
+          <td>{{ task.description }}</td>
+      </tr>
+          <tr>
+          <td>Дата початку</td>
+          <td>{{ task.date_from }}</td>
+      </tr>
+     <tr>
+          <td>Дата закінчення</td>
+          <td>{{ task.date_to }}</td>
+      </tr>
+         <tr>
+          <td>Тип</td>
+          <td>{{ task.type }}</td>
+      </tr>
+    <tr>
+          <td>Пріоритет</td>
+          <td>{{ task.priority }}</td>
+      </tr>
+        <tr>
+          <td>Оціночний час в годинах</td>
+          <td>{{ task.estimated_time }}</td>
+      </tr>
+      <tr>
+          <td>Автор</td>
+          <td>{{ task.author }}</td>
+      </tr>
+          <tr>
+          <td>Програміст</td>
+          <td>{{ task.performer }}</td>
+      </tr>
+              <tr>
+          <td>Створено</td>
+          <td>{{ task.created }}</td>
+      </tr>
+    </tbody>
+  </table>
+    <h2>Коментарі</h2>
+    <table class="table table-striped">
+        <thead>
+      <tr>
+        <th>Користувач</th>
+        <th>Коментар</th>
+          <th>Створено</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for comment in task.comments.all %}
+      <tr>
+      <td>{{ comment.author }}</td>
+      <td>{{ comment.text }}</td>
+      <td>{{ comment.created }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    <form role="form" method="post" action="">
+        {% csrf_token %}
+        {{ comment_add_form|crispy }}
+        <button tepe="submit" value="Submit" class="btn btn-info">Додати коментар</button>
+    </form>
+        <h2>Логування часу {% if task_time %}(всього затрачено часу: {{ task_time }}год. ){% endif %}</h2>
+    <table class="table table-striped">
+        <thead>
+      <tr>
+        <th>Користувач</th>
+        <th>Коментар</th>
+          <th>Затрачено часу</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for time in task.time_logging.all %}
+      <tr>
+      <td>{{ task.performer }}</td>
+      <td>{{ time.comment }}</td>
+      <td>{{ time.spent_time }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    </div>
+{% endblock %}

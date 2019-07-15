@@ -3,5 +3,6 @@ from django.utils.deprecation import MiddlewareMixin
 
 class PopupMiddleware(MiddlewareMixin):
 
-    def process_request(self, request):
+    @staticmethod
+    def process_request(request):
         request.is_popup = 'popup' in request.GET

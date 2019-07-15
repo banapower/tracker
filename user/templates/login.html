@@ -1,22 +1,17 @@
 {% extends "core.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 	<div class="container-fluid">
 		<div class="container">
 			<h2 class="text-center" id="title">Таски</h2>
             <div class="col-md-5">
-                <form role="form" method="post" action="">
+                <form role="form" method="post" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     <fieldset>
                         <p class="text-uppercase">Вхід  <a class="text-uppercase" href="{% url 'signup' %}">Реєстрація</a></p>
-                        <div class="form-group">
-                            {{ login_form.email.errors }}
-                            <input type="text" name="email" id="email" class="form-control input-lg" placeholder="email">
-                        </div>
-                        <div class="form-group">
-                            {{ login_form.password.errors }}
-                            <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-                        </div>
+                        {{ login_form|crispy }}
                         <div>
                             <input type="submit" class="btn btn-lg btn-primary" value="Вхід" name="singin">
                         </div>
@@ -27,8 +22,8 @@
 		</div>
 	</div>
     <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datepicker();
-            });
+        $(function () {
+            $('#datetimepicker1').datepicker();
+        });
     </script>
 {% endblock %}

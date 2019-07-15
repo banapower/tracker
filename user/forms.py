@@ -1,7 +1,5 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.core.validators import validate_email
-
 from user.models import User
 
 
@@ -20,14 +18,17 @@ class LoginForm(forms.Form):
 
 class UserCreationForm(forms.ModelForm):
     """
-    редагування та реєстрація клієнта
+    реєстрація клієнта
     """
     class Meta:
         model = User
-        exclude = ('is_staff', 'created', 'modified', 'username')
+        exclude = ('is_staff', 'created', 'modified', 'last_login')
+
+    field_order = ['email', 'first_name', 'last_name', 'date_birth', 'post', 'image', ]
 
     password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
     password2 = forms.CharField(widget=forms.PasswordInput, required=False, label='Повторіть пароль')
+    date_birth = forms.DateField(label='Дата народження', widget=forms.TextInput(attrs={'id': 'datetimepicker1'}))
 
     def clean_email(self):
         data = self.cleaned_data['email']
@@ -39,9 +40,6 @@ class UserCreationForm(forms.ModelForm):
             c = User.objects.filter(email=data).count()
         if c:
             raise forms.ValidationError('Ця електронна пошта вже використовується!')
-        # print(data)
-        # if not validate_email(data):
-        #     raise forms.ValidationError('Перевірте правильність написання адреси електронної пошти!')
         return data
 
     def clean_password(self):
@@ -56,3 +54,12 @@ class UserCreationForm(forms.ModelForm):
         if data != data2:
             raise forms.ValidationError('Паролі не збігаються!')
         return data2
+
+
+class UserEditForm(forms.ModelForm):
+    """
+    редагування клієнта
+    """
+    class Meta:
+        model = User
+        exclude = ('created', 'modified', 'last_login', 'password')

@@ -45,9 +45,7 @@ class Comment(models.Model):
     class Meta:
         db_table = 'comment'
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
-    object = GenericForeignKey('content_type', 'object_id')
+    task = models.ForeignKey(Task, related_name='comments', on_delete=models.PROTECT, null=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='comments', on_delete=models.PROTECT)
     text = models.CharField('Текст', max_length=255)
     created = models.DateTimeField(auto_now_add=True)
@@ -58,5 +56,6 @@ class TimeLogging(models.Model):
         db_table = 'time_logging'
 
     spent_time = models.PositiveIntegerField('Витрачений час в годинах')
-    task = models.ForeignKey(Task, on_delete=models.PROTECT)
+    comment = models.CharField('Коментар', max_length=255, null=True)
+    task = models.ForeignKey(Task, related_name='time_logging', on_delete=models.PROTECT)
 

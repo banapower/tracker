@@ -1,6 +1,5 @@
 from django import forms
-
-from tracker.models import Project, Task
+from tracker.models import Project, Task, Comment, TimeLogging
 
 
 class ProjectEditForm(forms.ModelForm):
@@ -24,3 +23,19 @@ class TaskForm(forms.ModelForm):
         exclude = ('created', 'modified', 'author', 'project')
 
 
+class CommentAddForm(forms.ModelForm):
+    """
+    створення коментара
+    """
+    class Meta:
+        model = Comment
+        fields = ('text', )
+
+
+class TimeLoggingForm(forms.ModelForm):
+    """
+    створення логування часу
+    """
+    class Meta:
+        model = TimeLogging
+        fields = ('spent_time', 'comment')

@@ -1,14 +1,12 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.urls import reverse_lazy
-from django.views import generic
+from django.contrib.auth import authenticate, login
 
-from user.forms import LoginForm, UserCreationForm
-from user.utils import login_user
+from tracker.utils.utils import close_view
+from user.forms import LoginForm, UserCreationForm, UserEditForm
 
 
-def login_user(request):
+def login(request):
     login_form = LoginForm(request.POST or None)
     if login_form.is_valid():
         cleaned_data = login_form.cleaned_data
@@ -24,7 +22,7 @@ def login_user(request):
 
 
 def signup(request):
-    form = UserCreationForm(request.POST or None)
+    form = UserCreationForm(request.POST or None, request.FILES or None)
     if request.POST:
         if form.is_valid():
             user = form.save(commit=False)
@@ -37,3 +35,11 @@ def signup(request):
                 return redirect('project-list')
     return render(request, 'signup.html', {'form': form})
 
+
+@login_required
+def edit(request):
+    form = UserEditForm(request.POST or None, request.FILES or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        return close_view(request, 'project-list')
+    return render(request, 'edit.html', {'form': form})

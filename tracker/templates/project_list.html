@@ -4,8 +4,9 @@
 <div class="container">
   <h2>Проекти</h2>
     {% if user.is_staff %}
-        <a href="{% url 'project-edit' 0 %}" class="btn btn-success popup form">Add</a>
+        <a href="{% url 'project-edit' 0 %}" class="btn btn-success popup">Додати проект</a>
     {% endif %}
+    <a href="{% url 'user-edit' %}" class="btn btn-success popup">Редагувати профіль</a>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -23,7 +24,7 @@
             <td>{{ project.description }}</td>
             {% if user.is_staff %}
                 <td>
-                    <a href="{% url 'project-edit' project.url %}" class="btn btn-success popup form">Edit</a>
+                    <a href="{% url 'project-edit' project.url %}" class="btn btn-success popup">Edit</a>
                 </td>
             {% endif %}
           </tr>
