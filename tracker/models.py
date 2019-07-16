@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
-from tracker.utils.models import TextField
+from tracker.utils.models import TextField, SlugField
 from user.models import User
 
 
@@ -12,7 +11,7 @@ class Project(models.Model):
 
     name = models.CharField('Текст', max_length=50)
     description = TextField('Текст', blank=True)
-    url = models.CharField('URL адреса', max_length=50, unique=True)
+    url = SlugField('URL адреса', max_length=50, unique=True)
     programers = models.ManyToManyField(User)
 
 
