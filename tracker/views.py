@@ -17,6 +17,7 @@ def index(request):
     return redirect('login')
 
 
+@login_required
 def project_list(request):
     """
     view projects related to user or is user stuff view all projects
