@@ -155,4 +155,9 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
-MEDIA_URL = '/media/' # django-storages/'
+MEDIA_URL = '/media/'
+
+if DEBUG == False:
+    import django_heroku
+    django_heroku.settings(locals())
+

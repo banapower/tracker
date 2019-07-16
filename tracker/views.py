@@ -31,7 +31,10 @@ def project_list(request):
 
 @login_required
 def project_show(request, url):
-    project = get_object_or_404(Project, url=url, programers=request.user)
+    if request.user.is_staff:
+        project = get_object_or_404(Project, url=url)
+    else:
+        project = get_object_or_404(Project, url=url, programers=request.user)
     return render(request, 'project_show.html', {'project': project})
 
 
@@ -50,7 +53,11 @@ def project_task_show(request, url, pk):
     """
     show task and add comments
     """
-    project = get_object_or_404(Project, url=url, programers=request.user)
+    user = request.user
+    if user.is_staff:
+        project = get_object_or_404(Project, url=url)
+    else:
+        project = get_object_or_404(Project, url=url, programers=user)
     task = get_object_or_404(Task, pk=pk, project=project)
     comment_add_form = CommentAddForm(request.POST or None)
     task_time = task.time_logging.all().aggregate(Sum('spent_time'))['spent_time__sum']
@@ -69,7 +76,10 @@ def project_task_edit(request, url, pk):
     edit task and send email
     """
     user = request.user
-    project = get_object_or_404(Project, url=url,  programers=user)
+    if user.is_staff:
+        project = get_object_or_404(Project, url=url)
+    else:
+        project = get_object_or_404(Project, url=url,  programers=user)
     task = None if pk == '0' else get_object_or_404(Task, pk=pk)
     form = TaskForm(request.POST or None, instance=task)
     task_before = dict(task.__dict__) if task else {}
