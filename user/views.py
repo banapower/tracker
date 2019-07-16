@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-
 from tracker.utils.utils import close_view
 from user.forms import LoginForm, UserCreationForm, UserEditForm
 
 
-def login(request):
+def login_user(request):
     login_form = LoginForm(request.POST or None)
     if login_form.is_valid():
         cleaned_data = login_form.cleaned_data
