@@ -8,7 +8,7 @@
         <a href="{% url 'project-edit' project.url %}" class="btn btn-success popup">Редагувати проект</a>
         <a href="{% url 'project-task-edit' project.url 0 %}" class="btn btn-success popup">Додати завдання</a>
     {% endif %}
-    <p>{{ project.description }}</p>
+    <p>{{ project.description|safe }}</p>
   <table class="table table-striped">
     <thead>
       <tr>
